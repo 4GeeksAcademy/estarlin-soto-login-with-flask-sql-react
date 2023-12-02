@@ -2,51 +2,106 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			message: null,
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			loginData: {
+				email: "",
+				password: ""
+			},
+			privateData: "",
+			loginRes : [],
+			newUserRes : ''
+		
+
+
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
+			getToken: async () => {
+				try {
+					const store = getStore()
+					await fetch(process.env.BACKEND_URL + "/api/login", {
+						method: "POST",
+						headers: {
+							"Content-type": "application/json"
+						},
+						body: JSON.stringify(store.loginData)
+					})
+						.then((res) => res.json())
+						.then((json) => {
+							if (json.access_token) {
+								localStorage.setItem("access_token", json.access_token)
+								let res = json.status
+								
+								store.loginRes.push(res)
+								store.loginRes.push(true)
+								 setStore({res: store.loginRes})
+								 
+							}
+							
+						})
 
-			getMessage: async () => {
-				try{
-					// fetching data from the backend
-					const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
-					const data = await resp.json()
-					setStore({ message: data.message })
-					// don't forget to return something, that is how the async resolves
-					return data;
-				}catch(error){
-					console.log("Error loading message from backend", error)
+				} catch (error) {
+					console.log("getToken function error==", error)
 				}
+
 			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
+			createNewUser: async (newUser) => {
+				try {
+					const store = getStore()
+					await fetch(process.env.BACKEND_URL + "/api/singup", {
+						method: "POST",
+						headers: {
+							"Content-type": "application/json"
+						},
+						
+						body: JSON.stringify(newUser)
+					})
+						.then((res) => res.json())
+						.then((json) => console.log(json))
+						setStore({store : store.newUserRes = 'success'})
+						
+					
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
+				} catch (error) {
+					console.log("getToken function error==", error)
+				}
 
-				//reset the global store
-				setStore({ demo: demo });
+			},
+			setEmail: (email) => {
+				const store = getStore()
+				store.loginData.email = email
+				setStore({ email: store.loginData.email })
+				console.log(store.loginData)
+			},
+			setPassword: (password) => {
+				const store = getStore()
+				store.loginData.password = password
+				setStore({ password: store.loginData.password })
+				console.log(store.loginData)
+			},
+
+			privateViewRequest: async () => {
+				if (localStorage.access_token) {
+					const store = getStore()
+					await fetch(process.env.BACKEND_URL + "/api/private", {
+
+						headers: {
+							Authorization: `Bearer ${localStorage.access_token}`
+						}
+					})
+						.then((res) => {
+							if (res.status == 200) {
+								return res.json()
+							} else {
+								throw Error(res.statusText)
+							}
+						})
+						.then((json) => store.privateData = json.msg)
+						setStore({ store: store.privateData })
+						setStore({store: store.loginRes = [true]})
+
+				}
+
 			}
+
 		}
 	};
 };
