@@ -4,73 +4,89 @@ import "../../styles/home.css";
 import { Link, Routes, Route, useNavigate } from "react-router-dom"
 
 export const Home = () => {
-	
+
 	const { store, actions } = useContext(Context);
 	const navigate = useNavigate();
 
-	useEffect(()=>{
-		if ( store.loginRes.includes('success')){
+	useEffect(() => {
+		if (store.loginRes.includes('success')) {
 			navigate('/private')
-			
-			}
-	}, [store.loginRes.length])
+		}
+
+		if (store.newUserRes == "success"){
+			setMsg("User Created!!")
+			setAlertColor("alert alert-success")
+		}
+
+		if(localStorage.access_token == "logOut"){
+			setMsg("you are log out!!")
+			setAlertColor("alert alert-warning")
+
+			setTimeout(()=>{
+				localStorage.setItem("access_token", " ")
+				setAlertColor("")
+				setMsg("")
+			}, 10000)
+		}
+
+		if(store.loginRes.includes("fail")){
+			setMsg("The password or the email you've entered is incorrect")
+			setAlertColor("alert alert-danger")
+		}
+
+	}, [store.loginRes.length, store.newUserRes.length])
+
+
+	const [email, setEmail] = useState("")
+	const [password, setPassword] = useState("")
+	const [msg, setMsg] = useState("")
+	const [alertColor, setAlertColor] = useState("")
 
 	
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [msg, setMsg] = useState("")
+	const sendLoginForm = () => {
+		let emailInput = email
+		emailInput = emailInput.toLocaleLowerCase()
+		if (password.length < 6 || !emailInput.includes("@gmail.com")) {
+			setMsg("this password or email not are valid")
+			setAlertColor(" alert alert-danger")
 
-    
+		} else {
 
-    const sendForm = () => {
-        let emailInput = email
-        emailInput = emailInput.toLocaleLowerCase()
-        if (password.length < 6 || !emailInput.includes("@gmail.com") || emailInput.length < 11 ) {
-            console.log(password.length)
-            setMsg("the password or the email not meets the registration requirements.")
-            
-        } else {
+			let loginObj = {
+				email: emailInput,
+				password: password
+			}
 
-            let newUser = {
-                email: emailInput,
-                password: password
-            }
-           
-            actions.createNewUser(newUser)
-            setMsg('')
-            setEmail('')
-            setPassword('')
-        }
-    }
-
- 
-
+			actions.getToken(loginObj)
+			setMsg('')
+			setEmail('')
+			setPassword('')
+			setAlertColor('')
+		}
+	}
 
 
 
 	return (
 		<div className="text-center mt-5">
 			<h1>Login</h1>
-			
-			<div className="mb-3 row">
-				<label for="staticEmail" className="col-sm-2 col-form-label" >Email</label>
-				<div className="col-sm-10">
-				<input type="text" className="form-control" id="inputEmail" placeholder="Email" onChange={(event) => actions.setEmail(event.target.value)}></input>
-				</div>			
-			</div>
-			
 
-			<div className="mb-3 row">
-				<label for="inputPassword" className="col-sm-2 col-form-label">Password</label>
+			<div className={alertColor} role="alert">{msg}</div>
 
-				<div className="col-sm-10">
-					<input type="password" className="form-control" id="inputPassword" placeholder="Password" onChange={(event) => actions.setPassword(event.target.value)}></input>
-				</div>
-			</div>
-			
-			
-			<button type="button" className="btn btn-primary px-5" onClick={() => actions.getToken()}>Login</button>
-			
+			<div className="form-floating mb-3">
+                        <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" value={email} onChange={(event) => setEmail(event.target.value)} required ></input>
+                        <label for="floatingInput">Email address</label>
+                    </div>
+
+                    <div className="form-floating">
+                        <input type="password" className="form-control" id="floatingPassword" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} ></input>
+                        <label for="floatingPassword">Password</label>
+                    </div>
+
+
+
+			<button type="button" className="btn btn-primary px-5" onClick={() => sendLoginForm()}>Login</button>
+
 		</div>
 	);
 };

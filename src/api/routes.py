@@ -29,7 +29,8 @@ def xx():
     lista =[{
         "id" : user.id,
         "email" : user.email,
-        "password": user.password
+        "password": user.password,
+        "create_at": user.create_at
     } for user in password]
 
     return jsonify(lista), 200
@@ -39,6 +40,10 @@ def xx():
 def create_user():
     email = request.json.get('email')
     password= request.json.get('password')
+    first_name= request.json.get('first_name')
+    last_name= request.json.get('last_name')
+
+
     user_exist_db = User.query.filter_by(email = email).first()
 
     if user_exist_db:
@@ -47,7 +52,12 @@ def create_user():
     if email and password:
 
         encrypted_password = bcrypt.generate_password_hash(password).decode('utf-8')
-        new_user = User(email = email, password= encrypted_password )
+        new_user = User(
+            email = email, 
+            password= encrypted_password, 
+            first_name= first_name,
+            last_name= last_name
+            )
         
         db.session.add(new_user)
         db.session.commit()
@@ -55,6 +65,7 @@ def create_user():
         return jsonify({
            "id" : new_user.id,
            "email" : new_user.email,
+           "msg" : "success"
 
         }), 200
     

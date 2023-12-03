@@ -2,10 +2,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			message: null,
-			loginData: {
-				email: "",
-				password: ""
-			},
 			privateData: "",
 			loginRes : [],
 			newUserRes : ''
@@ -14,15 +10,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 		},
 		actions: {
-			getToken: async () => {
+			getToken: async (loginObj) => {
 				try {
 					const store = getStore()
+					setStore({store: store.loginRes = []})
 					await fetch(process.env.BACKEND_URL + "/api/login", {
 						method: "POST",
-						headers: {
-							"Content-type": "application/json"
-						},
-						body: JSON.stringify(store.loginData)
+						headers: { "Content-type": "application/json" },
+						body: JSON.stringify(loginObj)
 					})
 						.then((res) => res.json())
 						.then((json) => {
@@ -33,19 +28,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 								store.loginRes.push(res)
 								store.loginRes.push(true)
 								 setStore({res: store.loginRes})
+								 console.log(store.loginRes)
 								 
+							}else{
+								setStore({store : store.loginRes = ["fail"]})
 							}
 							
 						})
 
 				} catch (error) {
 					console.log("getToken function error==", error)
+					
 				}
 
 			},
 			createNewUser: async (newUser) => {
 				try {
 					const store = getStore()
+					setStore({store: store.newUserRes = ""})
 					await fetch(process.env.BACKEND_URL + "/api/singup", {
 						method: "POST",
 						headers: {
@@ -55,27 +55,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 						body: JSON.stringify(newUser)
 					})
 						.then((res) => res.json())
-						.then((json) => console.log(json))
-						setStore({store : store.newUserRes = 'success'})
-						
+						.then((json) => setStore({store : store.newUserRes = json.msg}))
+						console.log(store.newUserRes)
 					
 
 				} catch (error) {
 					console.log("getToken function error==", error)
 				}
 
-			},
-			setEmail: (email) => {
-				const store = getStore()
-				store.loginData.email = email
-				setStore({ email: store.loginData.email })
-				console.log(store.loginData)
-			},
-			setPassword: (password) => {
-				const store = getStore()
-				store.loginData.password = password
-				setStore({ password: store.loginData.password })
-				console.log(store.loginData)
 			},
 
 			privateViewRequest: async () => {

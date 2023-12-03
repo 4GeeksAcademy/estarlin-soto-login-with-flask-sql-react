@@ -8,39 +8,45 @@ export const SingUp = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (store.newUserRes == "success"){
+        if (store.newUserRes == "success") {
             navigate('/')
         }
+        setMsg(store.newUserRes)
 
-    }, [store.newUserRes.length])
-
+    }, [store.newUserRes])
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [firstName, setFirstName] = useState("")
+    const [lastName, setLastName] = useState("")
     const [msg, setMsg] = useState("")
-
-    
 
     const sendForm = () => {
         let emailInput = email
         emailInput = emailInput.toLocaleLowerCase()
-        if (password.length < 6 || !emailInput.includes("@gmail.com") || emailInput.length < 11 ) {
-            console.log(password.length)
+
+        if (password.length < 6 || !emailInput.includes("@gmail.com") || emailInput.length < 11 || lastName.length < 3 || firstName.length < 3) {
             setMsg("the password or the email not meets the registration requirements.")
-            
+
         } else {
 
             let newUser = {
                 email: emailInput,
-                password: password
+                password: password,
+                first_name: firstName,
+                last_name: lastName
             }
            
             actions.createNewUser(newUser)
-            setMsg('')
             setEmail('')
-            setPassword('')
+            setPassword('')        
+
         }
+
+
     }
+
+
 
     return (
         <div className="text-center mt-5">
@@ -54,9 +60,19 @@ export const SingUp = () => {
                         <label for="floatingInput">Email address</label>
                     </div>
 
-                    <div className="form-floating">
+                    <div className="form-floating mb-3">
                         <input type="password" className="form-control" id="floatingPassword" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} ></input>
                         <label for="floatingPassword">Password</label>
+                    </div>
+
+                    <div className="form-floating mb-3">
+                        <input type="text" className="form-control" id="floatingInput" placeholder="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} ></input>
+                        <label for="floatingPassword">First Name</label>
+                    </div>
+
+                    <div className="form-floating">
+                        <input type="text" className="form-control" id="floatingInput" placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} ></input>
+                        <label for="floatingPassword">Last Name</label>
                     </div>
 
                     <button type="button" className="btn btn-success w-50" onClick={() => sendForm()}>Click me for sing up!!</button>

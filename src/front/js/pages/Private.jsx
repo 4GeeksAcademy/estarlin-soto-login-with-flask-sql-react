@@ -3,11 +3,17 @@ import { Context } from "../store/appContext";
 import { Link, Routes, Route, useNavigate } from "react-router-dom"
 
 export const Private = () => {
+    const navigate = useNavigate()
    
     useEffect(()=>{
         actions.privateViewRequest()
         
     }, [])
+
+    const logOut = ()=> {
+        localStorage.setItem("access_token", "logOut")
+        navigate('/')
+    }
    
     const { store, actions } = useContext(Context);
 
@@ -16,7 +22,12 @@ export const Private = () => {
             {!store.loginRes.includes(true)  ?  <h1>Acees Denied :(</h1>:
                 <div>
                     <h1>Private Home</h1>
-                    <img src="https://www.lpl.com/content/dam/lpl-www/images/newsroom/read/insider/insider-blog-meme-stocks-what-do-they-mean_article-hero-450x450.png" alt="" />
+                    <ul>
+                       
+                    </ul>
+                    <button type="button" class="btn btn-danger" onClick={()=> logOut()}>Log out</button>
+                    
+               
                 </div>}
         </div>
     );

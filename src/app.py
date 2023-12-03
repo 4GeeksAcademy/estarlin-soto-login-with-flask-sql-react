@@ -73,7 +73,7 @@ def serve_any_other_file(path):
 
 jwt = JWTManager(app)
 app.config["JWT_SECRET_KEY"] = "KCMzbECOh3RdcARVUPPMTeVRd"
-app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=1)
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(minutes=20)
 
 
 
