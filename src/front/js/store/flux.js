@@ -28,7 +28,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 								store.loginRes.push(res)
 								store.loginRes.push(true)
 								setStore({ res: store.loginRes })
-								
+
 
 							} else {
 								setStore({ store: store.loginRes = ["fail"] })
@@ -56,7 +56,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 						.then((res) => res.json())
 						.then((json) => setStore({ store: store.newUserRes = json.msg }))
-					
+
 
 
 				} catch (error) {
@@ -88,9 +88,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 
 			},
-			clearPrivateData: ()=>{
+			clearPrivateData: () => {
 				const store = getStore()
-				setStore({store: store.privateData = ""})
+				setStore({ store: store.privateData = "" })
 				location.reload(true)
 			}
 
