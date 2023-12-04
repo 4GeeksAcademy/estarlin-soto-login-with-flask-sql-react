@@ -87,6 +87,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				}
 
+			},
+			clearPrivateData: ()=>{
+				const store = getStore()
+				setStore({store: store.privateData = ""})
+				location.reload(true)
 			}
 
 		}

@@ -7,12 +7,18 @@ export const Private = () => {
 
     useEffect(() => {
         actions.privateViewRequest()
+        if(!localStorage.access_token || localStorage.access_token.length == 0|| localStorage.access_token == "logOut"   ){
+            navigate('/')
+        }
 
     }, [])
+
+ 
 
     const logOut = () => {
         localStorage.setItem("access_token", "logOut")
         navigate('/')
+        actions.clearPrivateData()
     }
 
     const { store, actions } = useContext(Context);

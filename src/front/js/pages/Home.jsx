@@ -23,7 +23,7 @@ export const Home = () => {
 			setAlertColor("alert alert-warning")
 
 			setTimeout(() => {
-				localStorage.setItem("access_token", " ")
+				localStorage.setItem("access_token", "")
 				setAlertColor("")
 				setMsg("")
 			}, 10000)
