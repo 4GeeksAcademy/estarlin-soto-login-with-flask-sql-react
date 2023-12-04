@@ -5,7 +5,6 @@ import { BackendURL } from "./component/backendURL";
 import injectContext from "./store/appContext";
 
 import { Home } from "./pages/Home.jsx";
-import { Navbar } from "./component/navbar";
 import { Private } from "./pages/Private.jsx";
 import { SingUp } from "./pages/SingUp.jsx";
 

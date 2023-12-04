@@ -28,7 +28,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 								store.loginRes.push(res)
 								store.loginRes.push(true)
 								setStore({ res: store.loginRes })
-								console.log(store.loginRes)
+								
 
 							} else {
 								setStore({ store: store.loginRes = ["fail"] })
@@ -56,7 +56,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 						.then((res) => res.json())
 						.then((json) => setStore({ store: store.newUserRes = json.msg }))
-					console.log(store.newUserRes)
+					
 
 
 				} catch (error) {

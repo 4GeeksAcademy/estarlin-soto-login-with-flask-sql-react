@@ -22,19 +22,6 @@ jwt = JWTManager(app)
 
 bcrypt = Bcrypt(app)
 
-@api.route('/')
-def xx():
-    password = User.query.all()
-
-    lista =[{
-        "id" : user.id,
-        "email" : user.email,
-        "password": user.password,
-        "create_at": user.create_at
-    } for user in password]
-
-    return jsonify(lista), 200
-
 
 @api.route('/singup', methods=['POST'])
 def create_user():
@@ -42,8 +29,6 @@ def create_user():
     password= request.json.get('password')
     first_name= request.json.get('first_name')
     last_name= request.json.get('last_name')
-
-
     user_exist_db = User.query.filter_by(email = email).first()
 
     if user_exist_db:
