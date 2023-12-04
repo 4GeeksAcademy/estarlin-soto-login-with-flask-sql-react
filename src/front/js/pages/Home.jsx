@@ -68,14 +68,14 @@ export const Home = () => {
 
 
 	return (
-		<div className="text-center mt-5">
+		<div className="text-center m-5">
 			<h1>Login</h1>
 
 			<div className={alertColor} role="alert">{msg}</div>
 
 			<div className="form-floating mb-3">
                         <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" value={email} onChange={(event) => setEmail(event.target.value)} required ></input>
-                        <label for="floatingInput">Email address</label>
+                        <label for="floatingInput" className="text-center">Email address</label>
                     </div>
 
                     <div className="form-floating">
@@ -85,7 +85,9 @@ export const Home = () => {
 
 
 
-			<button type="button" className="btn btn-primary px-5" onClick={() => sendLoginForm()}>Login</button>
+			<button type="button" className="btn btn-primary py-3 w-25 m-3" onClick={() => sendLoginForm()}>Login</button>
+			<h6>Or</h6>
+			<button type="button" className="btn btn-primary py-3 w-25 m-3" onClick={() => navigate('/singup')}>Sing Up</button>
 
 		</div>
 	);

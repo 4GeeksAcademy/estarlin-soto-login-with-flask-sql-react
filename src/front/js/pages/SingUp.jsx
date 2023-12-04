@@ -36,25 +36,38 @@ export const SingUp = () => {
                 first_name: firstName,
                 last_name: lastName
             }
-           
+
             actions.createNewUser(newUser)
             setEmail('')
-            setPassword('')        
+            setPassword('')
 
         }
-
-
     }
 
 
 
     return (
         <div className="text-center mt-5">
+
+            <Link to={'/'}>
+                <h4>Home Page</h4>
+            </Link>
             {
                 <div>
                     <h1>Sing Up</h1>
                     {msg.length == 0 ? ""
                         : <div class="alert alert-danger" role="alert">{msg}</div>}
+
+                    <div className="form-floating mb-3">
+                        <input type="text" className="form-control" id="floatingInput" placeholder="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} ></input>
+                        <label for="floatingPassword">First Name</label>
+                    </div>
+
+                    <div className="form-floating mb-3">
+                        <input type="text" className="form-control" id="floatingInput" placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} ></input>
+                        <label for="floatingPassword">Last Name</label>
+                    </div>
+
                     <div className="form-floating mb-3">
                         <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required ></input>
                         <label for="floatingInput">Email address</label>
@@ -65,22 +78,12 @@ export const SingUp = () => {
                         <label for="floatingPassword">Password</label>
                     </div>
 
-                    <div className="form-floating mb-3">
-                        <input type="text" className="form-control" id="floatingInput" placeholder="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} ></input>
-                        <label for="floatingPassword">First Name</label>
-                    </div>
-
-                    <div className="form-floating">
-                        <input type="text" className="form-control" id="floatingInput" placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} ></input>
-                        <label for="floatingPassword">Last Name</label>
-                    </div>
-
-                    <button type="button" className="btn btn-success w-50" onClick={() => sendForm()}>Click me for sing up!!</button>
+                    <button type="button" className="btn btn-success w-25 py-2 m-3" onClick={() => sendForm()}>Click me for sing up!!</button>
 
                     <div>
-                        <p>requirements for registration:</p>
-                        <p>password must be minimum length of 6</p>
-                        <p>we only accept: Gmail</p>
+                        <h5>requirements for registration:</h5>
+                        <p><b>password must be minimum length of 6</b></p>
+                        <p><b>we only accept Gmail</b></p>
                     </div>
                 </div>
 

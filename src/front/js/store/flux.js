@@ -3,9 +3,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			message: null,
 			privateData: "",
-			loginRes : [],
-			newUserRes : ''
-		
+			loginRes: [],
+			newUserRes: ''
+
 
 
 		},
@@ -13,7 +13,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			getToken: async (loginObj) => {
 				try {
 					const store = getStore()
-					setStore({store: store.loginRes = []})
+					setStore({ store: store.loginRes = [] })
 					await fetch(process.env.BACKEND_URL + "/api/login", {
 						method: "POST",
 						headers: { "Content-type": "application/json" },
@@ -24,40 +24,40 @@ const getState = ({ getStore, getActions, setStore }) => {
 							if (json.access_token) {
 								localStorage.setItem("access_token", json.access_token)
 								let res = json.status
-								
+
 								store.loginRes.push(res)
 								store.loginRes.push(true)
-								 setStore({res: store.loginRes})
-								 console.log(store.loginRes)
-								 
-							}else{
-								setStore({store : store.loginRes = ["fail"]})
+								setStore({ res: store.loginRes })
+								console.log(store.loginRes)
+
+							} else {
+								setStore({ store: store.loginRes = ["fail"] })
 							}
-							
+
 						})
 
 				} catch (error) {
 					console.log("getToken function error==", error)
-					
+
 				}
 
 			},
 			createNewUser: async (newUser) => {
 				try {
 					const store = getStore()
-					setStore({store: store.newUserRes = ""})
+					setStore({ store: store.newUserRes = "" })
 					await fetch(process.env.BACKEND_URL + "/api/singup", {
 						method: "POST",
 						headers: {
 							"Content-type": "application/json"
 						},
-						
+
 						body: JSON.stringify(newUser)
 					})
 						.then((res) => res.json())
-						.then((json) => setStore({store : store.newUserRes = json.msg}))
-						console.log(store.newUserRes)
-					
+						.then((json) => setStore({ store: store.newUserRes = json.msg }))
+					console.log(store.newUserRes)
+
 
 				} catch (error) {
 					console.log("getToken function error==", error)
@@ -81,9 +81,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 								throw Error(res.statusText)
 							}
 						})
-						.then((json) => store.privateData = json.msg)
-						setStore({ store: store.privateData })
-						setStore({store: store.loginRes = [true]})
+						.then((json) => store.privateData = json)
+					setStore({ store: store.privateData })
+					setStore({ store: store.loginRes = [true] })
 
 				}
 

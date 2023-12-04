@@ -89,11 +89,12 @@ def get_token():
        
         if true_o_false:       
             access_token = create_access_token(identity= email_from_db.id)
+
             return jsonify({ 
                 'access_token': access_token,
                 'status': 'success',
                 }), 200
-
+        
         else:
             return {"Error": "Incorrect password"}
     
@@ -103,11 +104,18 @@ def get_token():
 @api.route('/private')
 @jwt_required()
 def sing_user():
-    #user_validation = get_jwt_identity()
+    user_validation = get_jwt_identity()
+    user_from_db = User.query.get(user_validation)
 
-    #if user_validation:
-        return jsonify({'msg': 'success'}), 200
+    if user_validation:
+        return jsonify({
+            'msg': 'success',
+            'user_id': user_from_db.id,
+            'create_at': user_from_db.create_at,
+            'first_name': user_from_db.first_name,
+            'last_name': user_from_db.last_name
+            }), 200
     
-    #else:
-        #return jsonify({"msg": 'token no valido o inexistente'}), 401
+    else:
+        return jsonify({"msg": 'token no valido o inexistente'}), 401
 
